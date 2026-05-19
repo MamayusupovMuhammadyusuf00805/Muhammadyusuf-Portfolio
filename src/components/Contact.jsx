@@ -20,14 +20,14 @@ const Contact = () => {
     {
       icon: Mail,
       title: t.contact.info.email,
-      value: 'hello@example.com',
+      value: 'mmuxa347@gmail.com',
       href: 'mailto:hello@example.com',
     },
     {
       icon: Phone,
       title: t.contact.info.phone,
-      value: '+7 (999) 123-45-67',
-      href: 'tel:+79991234567',
+      value: '+998 77 277 58 83',
+      href: 'tel:+998772775883',
     },
     {
       icon: MapPin,

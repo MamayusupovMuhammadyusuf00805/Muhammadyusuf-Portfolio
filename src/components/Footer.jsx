@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { Heart, Github, Linkedin, Twitter, Mail } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 
 const socialLinks = [
   { icon: Github, href: '#', label: 'GitHub' },
@@ -10,6 +12,8 @@ const socialLinks = [
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const { language } = useLanguage()
+  const t = translations[language]
 
   return (
     <footer className="relative bg-dark-900/50 border-t border-white/5">
@@ -19,36 +23,39 @@ const Footer = () => {
           <div>
             <h3 className="text-2xl font-bold text-gradient mb-4">Portfolio</h3>
             <p className="text-dark-300 leading-relaxed">
-              Создаю современные веб-приложения с фокусом на производительность
-              и пользовательский опыт.
+              {t.footer.description}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
             <h4 className="text-lg font-semibold text-dark-100 mb-4">
-              Быстрые ссылки
+              {t.footer.quickLinks}
             </h4>
             <ul className="space-y-2">
-              {['Главная', 'Обо мне', 'Навыки', 'Проекты', 'Контакты'].map(
-                (item, index) => (
-                  <li key={index}>
-                    <a
-                      href={`#${item.toLowerCase().replace(' ', '-')}`}
-                      className="text-dark-300 hover:text-primary-400 transition-colors"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
+              {[
+                { key: 'home', href: '#home' },
+                { key: 'about', href: '#about' },
+                { key: 'skills', href: '#skills' },
+                { key: 'projects', href: '#projects' },
+                { key: 'contact', href: '#contact' },
+              ].map((item, index) => (
+                <li key={index}>
+                  <a
+                    href={item.href}
+                    className="text-dark-300 hover:text-primary-400 transition-colors"
+                  >
+                    {t.nav[item.key]}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Social Links */}
           <div>
             <h4 className="text-lg font-semibold text-dark-100 mb-4">
-              Социальные сети
+              {t.footer.social}
             </h4>
             <div className="flex gap-3">
               {socialLinks.map((social, index) => (
@@ -70,10 +77,10 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-dark-400 text-sm text-center sm:text-left">
-            © {currentYear} Portfolio. Все права защищены.
+            © {currentYear} Portfolio. {t.footer.rights}
           </p>
           <p className="text-dark-400 text-sm flex items-center gap-1">
-            Сделано с <Heart size={16} className="text-red-500" /> и React
+            {t.footer.madeWith} <Heart size={16} className="text-red-500" /> {t.footer.and}
           </p>
         </div>
       </div>

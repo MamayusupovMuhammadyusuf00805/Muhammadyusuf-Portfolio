@@ -1,37 +1,41 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { Mail, MapPin, Phone, Send } from 'lucide-react'
-
-const contactInfo = [
-  {
-    icon: Mail,
-    title: 'Email',
-    value: 'hello@example.com',
-    href: 'mailto:hello@example.com',
-  },
-  {
-    icon: Phone,
-    title: 'Телефон',
-    value: '+7 (999) 123-45-67',
-    href: 'tel:+79991234567',
-  },
-  {
-    icon: MapPin,
-    title: 'Локация',
-    value: 'Москва, Россия',
-    href: '#',
-  },
-]
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 
 const Contact = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { language } = useLanguage()
+  const t = translations[language]
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: t.contact.info.email,
+      value: 'hello@example.com',
+      href: 'mailto:hello@example.com',
+    },
+    {
+      icon: Phone,
+      title: t.contact.info.phone,
+      value: '+7 (999) 123-45-67',
+      href: 'tel:+79991234567',
+    },
+    {
+      icon: MapPin,
+      title: t.contact.info.location,
+      value: t.contact.info.locationValue,
+      href: '#',
+    },
+  ]
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -82,15 +86,14 @@ const Contact = () => {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <span className="inline-block px-4 py-2 rounded-full glass-effect text-primary-400 text-sm font-medium mb-4">
-              Контакты
+              {t.contact.badge}
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              Давайте{' '}
-              <span className="text-gradient">работать вместе</span>
+              {t.contact.title}{' '}
+              <span className="text-gradient">{t.contact.titleHighlight}</span>
             </h2>
             <p className="text-lg text-dark-300 max-w-3xl mx-auto leading-relaxed">
-              Есть проект или идея? Свяжитесь со мной, и давайте создадим
-              что-то удивительное вместе
+              {t.contact.description}
             </p>
           </motion.div>
 
@@ -99,11 +102,10 @@ const Contact = () => {
             <motion.div variants={itemVariants} className="space-y-8">
               <div>
                 <h3 className="text-2xl font-bold mb-6 text-dark-50">
-                  Свяжитесь со мной
+                  {t.contact.getInTouch}
                 </h3>
                 <p className="text-dark-300 leading-relaxed mb-8">
-                  Я всегда открыт для обсуждения новых проектов, креативных идей
-                  или возможностей стать частью вашей команды.
+                  {t.contact.intro}
                 </p>
               </div>
 
@@ -139,7 +141,7 @@ const Contact = () => {
                     htmlFor="name"
                     className="block text-sm font-medium text-dark-200 mb-2"
                   >
-                    Ваше имя
+                    {t.contact.form.name}
                   </label>
                   <input
                     type="text"
@@ -149,7 +151,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 glass-effect rounded-xl text-dark-100 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
-                    placeholder="Иван Иванов"
+                    placeholder={t.contact.form.namePlaceholder}
                   />
                 </div>
 
@@ -158,7 +160,7 @@ const Contact = () => {
                     htmlFor="email"
                     className="block text-sm font-medium text-dark-200 mb-2"
                   >
-                    Email
+                    {t.contact.form.email}
                   </label>
                   <input
                     type="email"
@@ -168,7 +170,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 glass-effect rounded-xl text-dark-100 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
-                    placeholder="ivan@example.com"
+                    placeholder={t.contact.form.emailPlaceholder}
                   />
                 </div>
 
@@ -177,7 +179,7 @@ const Contact = () => {
                     htmlFor="message"
                     className="block text-sm font-medium text-dark-200 mb-2"
                   >
-                    Сообщение
+                    {t.contact.form.message}
                   </label>
                   <textarea
                     id="message"
@@ -187,7 +189,7 @@ const Contact = () => {
                     required
                     rows={6}
                     className="w-full px-4 py-3 glass-effect rounded-xl text-dark-100 placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all resize-none"
-                    placeholder="Расскажите о вашем проекте..."
+                    placeholder={t.contact.form.messagePlaceholder}
                   />
                 </div>
 
@@ -205,12 +207,12 @@ const Contact = () => {
                         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                         className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                       />
-                      Отправка...
+                      {t.contact.form.sending}
                     </>
                   ) : (
                     <>
                       <Send size={20} />
-                      Отправить сообщение
+                      {t.contact.form.send}
                     </>
                   )}
                 </motion.button>

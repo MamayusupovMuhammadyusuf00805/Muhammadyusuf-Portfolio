@@ -1,9 +1,11 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 
 const skillCategories = [
   {
-    title: 'Frontend',
+    key: 'frontend',
     skills: [
       { name: 'React', level: 95 },
       { name: 'TypeScript', level: 90 },
@@ -14,7 +16,7 @@ const skillCategories = [
     ],
   },
   {
-    title: 'Backend',
+    key: 'backend',
     skills: [
       { name: 'Node.js', level: 85 },
       { name: 'Express', level: 82 },
@@ -25,7 +27,7 @@ const skillCategories = [
     ],
   },
   {
-    title: 'Инструменты',
+    key: 'tools',
     skills: [
       { name: 'Git', level: 92 },
       { name: 'Docker', level: 80 },
@@ -74,6 +76,8 @@ const SkillBar = ({ skill, index }) => {
 const Skills = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { language } = useLanguage()
+  const t = translations[language]
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -105,15 +109,14 @@ const Skills = () => {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <span className="inline-block px-4 py-2 rounded-full glass-effect text-primary-400 text-sm font-medium mb-4">
-              Навыки
+              {t.skills.badge}
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              Мой технологический{' '}
-              <span className="text-gradient">стек</span>
+              {t.skills.title}{' '}
+              <span className="text-gradient">{t.skills.titleHighlight}</span>
             </h2>
             <p className="text-lg text-dark-300 max-w-3xl mx-auto leading-relaxed">
-              Постоянно изучаю новые технологии и совершенствую свои навыки,
-              чтобы создавать лучшие решения
+              {t.skills.description}
             </p>
           </motion.div>
 
@@ -126,7 +129,7 @@ const Skills = () => {
                 className="glass-effect rounded-2xl p-8 hover:bg-white/10 transition-colors"
               >
                 <h3 className="text-2xl font-bold mb-8 text-gradient">
-                  {category.title}
+                  {t.skills.categories[category.key]}
                 </h3>
                 <div>
                   {category.skills.map((skill, skillIndex) => (
@@ -147,11 +150,11 @@ const Skills = () => {
             className="mt-16 text-center glass-effect rounded-2xl p-8"
           >
             <p className="text-dark-300 text-lg leading-relaxed">
-              Помимо основных технологий, я также работаю с{' '}
+              {t.skills.additional}{' '}
               <span className="text-primary-400 font-semibold">
-                Redux, Zustand, React Query, Prisma, Supabase, Firebase
+                {t.skills.additionalTools}
               </span>{' '}
-              и многими другими инструментами современной веб-разработки
+              {t.skills.additionalText}
             </p>
           </motion.div>
         </motion.div>

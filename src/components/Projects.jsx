@@ -1,65 +1,61 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { ExternalLink, Github } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 
-const projects = [
+const projectsData = [
   {
-    title: 'E-Commerce Platform',
-    description: 'Полнофункциональная платформа электронной коммерции с корзиной, оплатой и админ-панелью',
+    key: 'ecommerce',
     image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop',
     tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
     github: '#',
-    demo: '#',
+    demo: 'https://exclusive-figma-sigma.vercel.app',
     color: 'from-blue-500 to-cyan-500',
   },
   {
-    title: 'AI Chat Application',
-    description: 'Чат-приложение с интеграцией искусственного интеллекта и real-time сообщениями',
+    key: 'aiChat',
     image: 'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?w=800&h=600&fit=crop',
     tags: ['Next.js', 'OpenAI', 'Socket.io', 'Tailwind'],
     github: '#',
-    demo: '#',
+    demo: 'https://exclusive-figma-sigma.vercel.app',
     color: 'from-purple-500 to-pink-500',
   },
   {
-    title: 'Portfolio Dashboard',
-    description: 'Интерактивная панель управления для отслеживания инвестиционного портфеля',
+    key: 'dashboard',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
     tags: ['React', 'TypeScript', 'Chart.js', 'Firebase'],
     github: '#',
-    demo: '#',
+    demo: 'https://exclusive-figma-sigma.vercel.app',
     color: 'from-green-500 to-emerald-500',
   },
   {
-    title: 'Social Media App',
-    description: 'Социальная сеть с постами, комментариями, лайками и системой подписок',
+    key: 'social',
     image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop',
     tags: ['React', 'GraphQL', 'PostgreSQL', 'AWS'],
     github: '#',
-    demo: '#',
+    demo: 'https://exclusive-figma-sigma.vercel.app',
     color: 'from-orange-500 to-red-500',
   },
   {
-    title: 'Fitness Tracker',
-    description: 'Приложение для отслеживания тренировок, питания и прогресса в фитнесе',
+    key: 'fitness',
     image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=600&fit=crop',
     tags: ['React Native', 'Redux', 'Node.js', 'MongoDB'],
     github: '#',
-    demo: '#',
+    demo: 'https://exclusive-figma-sigma.vercel.app',
     color: 'from-yellow-500 to-orange-500',
   },
   {
-    title: 'Weather Dashboard',
-    description: 'Красивая панель погоды с прогнозами, картами и уведомлениями',
+    key: 'weather',
     image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?w=800&h=600&fit=crop',
     tags: ['Vue.js', 'Weather API', 'Mapbox', 'Tailwind'],
     github: '#',
-    demo: '#',
+    demo: 'https://exclusive-figma-sigma.vercel.app',
     color: 'from-cyan-500 to-blue-500',
   },
 ]
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index, t }) => {
   const [isHovered, setIsHovered] = useState(false)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
@@ -117,10 +113,10 @@ const ProjectCard = ({ project, index }) => {
       {/* Content */}
       <div className="p-6">
         <h3 className="text-xl font-bold mb-2 text-dark-50 group-hover:text-primary-400 transition-colors">
-          {project.title}
+          {t.projects.items[project.key].title}
         </h3>
         <p className="text-dark-300 mb-4 leading-relaxed">
-          {project.description}
+          {t.projects.items[project.key].description}
         </p>
         
         {/* Tags */}
@@ -142,6 +138,8 @@ const ProjectCard = ({ project, index }) => {
 const Projects = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { language } = useLanguage()
+  const t = translations[language]
 
   return (
     <section id="projects" ref={ref} className="relative section-padding bg-dark-900/50">
@@ -154,22 +152,21 @@ const Projects = () => {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full glass-effect text-primary-400 text-sm font-medium mb-4">
-            Проекты
+            {t.projects.badge}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-            Мои последние{' '}
-            <span className="text-gradient">работы</span>
+            {t.projects.title}{' '}
+            <span className="text-gradient">{t.projects.titleHighlight}</span>
           </h2>
           <p className="text-lg text-dark-300 max-w-3xl mx-auto leading-relaxed">
-            Подборка проектов, которые демонстрируют мои навыки и опыт
-            в создании современных веб-приложений
+            {t.projects.description}
           </p>
         </motion.div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} index={index} />
+          {projectsData.map((project, index) => (
+            <ProjectCard key={index} project={project} index={index} t={t} />
           ))}
         </div>
 
@@ -181,7 +178,7 @@ const Projects = () => {
           className="text-center mt-16"
         >
           <p className="text-dark-300 mb-6">
-            Хотите увидеть больше моих работ?
+            {t.projects.seeMore}
           </p>
           <motion.a
             href="https://github.com"
@@ -192,7 +189,7 @@ const Projects = () => {
             className="inline-flex items-center gap-2 px-8 py-4 glass-effect rounded-full text-dark-100 font-semibold hover:bg-white/10 transition-colors cursor-pointer"
           >
             <Github size={20} />
-            Посетить GitHub
+            {t.projects.visitGithub}
           </motion.a>
         </motion.div>
       </div>

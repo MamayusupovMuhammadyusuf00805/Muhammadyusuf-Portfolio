@@ -1,8 +1,12 @@
 import { motion } from 'framer-motion'
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 import Scene3D from './Scene3D'
 
 const Hero = () => {
+  const { language } = useLanguage()
+  const t = translations[language]
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -42,7 +46,7 @@ const Hero = () => {
       >
         <motion.div variants={itemVariants} className="mb-6">
           <span className="inline-block px-4 py-2 rounded-full glass-effect text-primary-400 text-sm font-medium">
-            👋 Добро пожаловать в моё портфолио
+            {t.hero.welcome}
           </span>
         </motion.div>
 
@@ -50,18 +54,17 @@ const Hero = () => {
           variants={itemVariants}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
         >
-          Привет, я{' '}
-          <span className="text-gradient">Frontend</span>
+          {t.hero.greeting}{' '}
+          <span className="text-gradient">{t.hero.title}</span>
           <br />
-          Разработчик
+          {t.hero.subtitle}
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
           className="text-lg sm:text-xl md:text-2xl text-dark-300 mb-8 max-w-3xl mx-auto leading-relaxed"
         >
-          Создаю современные, интерактивные и высокопроизводительные веб-приложения
-          с использованием передовых технологий
+          {t.hero.description}
         </motion.p>
 
         <motion.div
@@ -74,7 +77,7 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full text-white font-semibold shadow-lg hover:shadow-primary-500/50 transition-shadow cursor-pointer"
           >
-            Посмотреть проекты
+            {t.hero.viewProjects}
           </motion.a>
           <motion.a
             href="#contact"
@@ -82,7 +85,7 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 glass-effect rounded-full text-dark-100 font-semibold hover:bg-white/10 transition-colors cursor-pointer"
           >
-            Связаться со мной
+            {t.hero.contactMe}
           </motion.a>
         </motion.div>
 
@@ -121,7 +124,7 @@ const Hero = () => {
             transition={{ duration: 1.5, repeat: Infinity }}
             className="flex flex-col items-center gap-2 text-dark-400 cursor-pointer"
           >
-            <span className="text-sm">Прокрутите вниз</span>
+            <span className="text-sm">{t.hero.scrollDown}</span>
             <ArrowDown size={20} />
           </motion.div>
         </motion.div>

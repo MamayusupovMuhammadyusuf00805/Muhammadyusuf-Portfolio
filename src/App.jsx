@@ -1,5 +1,6 @@
 import { BrowserRouter as Router } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { LanguageProvider } from './context/LanguageContext'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -12,25 +13,27 @@ import CustomCursor from './components/CustomCursor'
 
 function App() {
   return (
-    <Router>
-      <div className="relative min-h-screen">
-        <CustomCursor />
-        <ScrollProgress />
-        <Navbar />
-        
-        <AnimatePresence mode="wait">
-          <main className="relative">
-            <Hero />
-            <About />
-            <Skills />
-            <Projects />
-            <Contact />
-          </main>
-        </AnimatePresence>
-        
-        <Footer />
-      </div>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <div className="relative min-h-screen">
+          <CustomCursor />
+          <ScrollProgress />
+          <Navbar />
+          
+          <AnimatePresence mode="wait">
+            <main className="relative">
+              <Hero />
+              <About />
+              <Skills />
+              <Projects />
+              <Contact />
+            </main>
+          </AnimatePresence>
+          
+          <Footer />
+        </div>
+      </Router>
+    </LanguageProvider>
   )
 }
 

@@ -2,33 +2,37 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Code2, Palette, Rocket, Users } from 'lucide-react'
-
-const features = [
-  {
-    icon: Code2,
-    title: 'Чистый код',
-    description: 'Пишу масштабируемый, поддерживаемый и оптимизированный код',
-  },
-  {
-    icon: Palette,
-    title: 'Современный дизайн',
-    description: 'Создаю интуитивные интерфейсы с вниманием к деталям',
-  },
-  {
-    icon: Rocket,
-    title: 'Высокая производительность',
-    description: 'Оптимизирую приложения для максимальной скорости',
-  },
-  {
-    icon: Users,
-    title: 'Командная работа',
-    description: 'Эффективно работаю в команде и коммуницирую с клиентами',
-  },
-]
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 
 const About = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { language } = useLanguage()
+  const t = translations[language]
+
+  const features = [
+    {
+      icon: Code2,
+      title: t.about.features.code.title,
+      description: t.about.features.code.description,
+    },
+    {
+      icon: Palette,
+      title: t.about.features.design.title,
+      description: t.about.features.design.description,
+    },
+    {
+      icon: Rocket,
+      title: t.about.features.performance.title,
+      description: t.about.features.performance.description,
+    },
+    {
+      icon: Users,
+      title: t.about.features.teamwork.title,
+      description: t.about.features.teamwork.description,
+    },
+  ]
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,17 +64,14 @@ const About = () => {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <span className="inline-block px-4 py-2 rounded-full glass-effect text-primary-400 text-sm font-medium mb-4">
-              Обо мне
+              {t.about.badge}
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              Превращаю идеи в{' '}
-              <span className="text-gradient">реальность</span>
+              {t.about.title}{' '}
+              <span className="text-gradient">{t.about.titleHighlight}</span>
             </h2>
             <p className="text-lg text-dark-300 max-w-3xl mx-auto leading-relaxed">
-              Я Frontend-разработчик с более чем 5-летним опытом создания современных
-              веб-приложений. Специализируюсь на React, TypeScript и современных
-              фреймворках. Моя цель — создавать продукты, которые не только красиво
-              выглядят, но и решают реальные проблемы пользователей.
+              {t.about.description}
             </p>
           </motion.div>
 
@@ -102,10 +103,10 @@ const About = () => {
             className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
           >
             {[
-              { value: '5+', label: 'Лет опыта' },
-              { value: '50+', label: 'Проектов' },
-              { value: '30+', label: 'Клиентов' },
-              { value: '100%', label: 'Удовлетворённость' },
+              { value: '5+', label: t.about.stats.experience },
+              { value: '50+', label: t.about.stats.projects },
+              { value: '30+', label: t.about.stats.clients },
+              { value: '100%', label: t.about.stats.satisfaction },
             ].map((stat, index) => (
               <motion.div
                 key={index}

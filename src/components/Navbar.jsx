@@ -1,19 +1,30 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Globe } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations/translations'
 
 const navItems = [
-  { name: 'Главная', href: '#home' },
-  { name: 'Обо мне', href: '#about' },
-  { name: 'Навыки', href: '#skills' },
-  { name: 'Проекты', href: '#projects' },
-  { name: 'Контакты', href: '#contact' },
+  { key: 'home', href: '#home' },
+  { key: 'about', href: '#about' },
+  { key: 'skills', href: '#skills' },
+  { key: 'projects', href: '#projects' },
+  { key: 'contact', href: '#contact' },
+]
+
+const languages = [
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+  { code: 'uz', name: 'O\'zbekcha', flag: '🇺🇿' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
 ]
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
+  const { language, changeLanguage } = useLanguage()
+  const t = translations[language]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,7 +84,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <motion.a
-                key={item.name}
+                key={item.key}
                 href={item.href}
                 onClick={(e) => {
                   e.preventDefault()
@@ -87,9 +98,54 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {item.name}
+                {t.nav[item.key]}
               </motion.a>
             ))}
+            
+            {/* Language Switcher */}
+            <div className="relative ml-2">
+              <motion.button
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className="p-2 rounded-lg text-dark-300 hover:text-primary-400 hover:bg-white/5 transition-colors flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Globe size={18} />
+                <span className="text-sm font-medium">
+                  {languages.find(lang => lang.code === language)?.flag}
+                </span>
+              </motion.button>
+              
+              <AnimatePresence>
+                {isLangMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 mt-2 glass-effect rounded-xl overflow-hidden shadow-2xl min-w-[160px]"
+                  >
+                    {languages.map((lang) => (
+                      <motion.button
+                        key={lang.code}
+                        onClick={() => {
+                          changeLanguage(lang.code)
+                          setIsLangMenuOpen(false)
+                        }}
+                        className={`w-full px-4 py-3 text-left text-sm font-medium transition-colors flex items-center gap-3 ${
+                          language === lang.code
+                            ? 'text-primary-400 bg-primary-500/10'
+                            : 'text-dark-300 hover:text-primary-400 hover:bg-white/5'
+                        }`}
+                        whileHover={{ x: 5 }}
+                      >
+                        <span className="text-lg">{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -115,7 +171,7 @@ const Navbar = () => {
               <div className="pt-4 pb-2 space-y-2">
                 {navItems.map((item, index) => (
                   <motion.a
-                    key={item.name}
+                    key={item.key}
                     href={item.href}
                     onClick={(e) => {
                       e.preventDefault()
@@ -130,9 +186,37 @@ const Navbar = () => {
                         : 'text-dark-300 hover:text-primary-400 hover:bg-white/5'
                     }`}
                   >
-                    {item.name}
+                    {t.nav[item.key]}
                   </motion.a>
                 ))}
+                
+                {/* Mobile Language Switcher */}
+                <div className="pt-2 border-t border-white/10">
+                  <div className="px-4 py-2 text-xs text-dark-400 font-medium">
+                    <Globe size={14} className="inline mr-2" />
+                    Language
+                  </div>
+                  {languages.map((lang, index) => (
+                    <motion.button
+                      key={lang.code}
+                      onClick={() => {
+                        changeLanguage(lang.code)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: (navItems.length + index) * 0.1 }}
+                      className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors flex items-center gap-3 ${
+                        language === lang.code
+                          ? 'text-primary-400 bg-primary-500/10'
+                          : 'text-dark-300 hover:text-primary-400 hover:bg-white/5'
+                      }`}
+                    >
+                      <span className="text-lg">{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </motion.button>
+                  ))}
+                </div>
               </div>
             </motion.div>
           )}
